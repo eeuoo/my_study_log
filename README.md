@@ -83,10 +83,9 @@ $> cat /usr/share/i18n/SUPPORTED
 $> localedef -f UTF-8 -i ko_KR ko_KR.UTF-8
 $> locale-gen ko_KR.UTF-8
 $> locale -a
- 
  # ~/.profile에 추가
-LC_ALL=ko_KR.UTF-8 bash
-export LANGUAGE=ko
+ LC_ALL=ko_KR.UTF-8 bash
+ export LANGUAGE=ko
 
 4) Git 사용 설정 
  #> apt-get install git
