@@ -1,8 +1,7 @@
-# my_study_log
-==============
+### my_study_log
 
 
-문항 1.
+#문항 1.
 -----------
 
 docker  실행 후, docker search oracle 해서 나온 리스트 중 하나 선정.
@@ -19,7 +18,7 @@ $> docker exec -it oracle bas
 
 
 
-문항 2.
+#문항 2.
 -----------
 
 
@@ -38,11 +37,11 @@ $> docker exec -it mysql5 bash
  #> mysql -u root -p
 
 
-문항 3.
+##문항 3.
 ------------
 
 
-1) 오라클 사용자(user) 생성과정
+#1) 오라클 사용자(user) 생성과정
 
 
 SQL Developer > 접속 > 다른 사용자 > 사용자 생성
@@ -52,7 +51,7 @@ SQL Developer > 접속 > 다른 사용자 > 사용자 편집 / 삭제
 
 -------------
 
-2) MYSQL 사용자(user) 생성과정
+#2) MYSQL 사용자(user) 생성과정
 
 
  #> mysql -u root -p
@@ -64,7 +63,7 @@ mysql> grant all privileges on *.* to '<user-name>'@'<host>';
 mysql> grant all privileges on <DB>.* to '<user-name>'@'<host>'';  
 
 
-문항 4.
+##문항 4.
 ------
 
 Docker는 하나의 서버(컨테이너)를 통해 제각각 다른 환경 속에서 같은 활용을 할 수 있게 만들어준다.
@@ -73,10 +72,10 @@ docker는 가상의 machine을 PC의 infra(H/W) 위 OS 위에 올린다. 하나�
 Docker의 설치는 홈페이지에서 본인 PC의 OS에 맞춰 설치한다. 정상 설치가 되었다면 터미널에서 docker version 입력 후 버전 확인이 가능하다. docker가 정상 작동되면, 그 위에image를 pull 받고 컨테이너를 생성(run)하고 필요한 것들을 추가하며 사용하면 된다.
 
 
-문항 5.
+##문항 5.
 ------
-----------------
-1. Linux(Ubuntu) Docker Container를 구동하기 위한 절차
+
+#1. Linux(Ubuntu) Docker Container를 구동하기 위한 절차
 
 docker container run <docker-image-name> <command>
  
@@ -93,7 +92,7 @@ $> docker image ls
 
 --------------------
 
-2. 설치된 ubuntu 컨테이너에 Telnet daemon 구동
+#2. 설치된 ubuntu 컨테이너에 Telnet daemon 구동
 
 $> sudo apt-get install xinetd telnetd
 
@@ -124,7 +123,7 @@ putty로 telnet 접속 / 터미널에 telnet localhost 입력
 ----------
 
 
-3. 한글 사용 설정
+#3. 한글 사용 설정
 
 $> locale     
 
@@ -148,7 +147,7 @@ export LANGUAGE=ko
 ----------------
 
 
-4. Git 사용 설정 
+#4. Git 사용 설정 
 
 #> apt-get install git
 
