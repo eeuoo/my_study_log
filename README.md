@@ -111,24 +111,24 @@ Linux(ubuntu) docker container 구동하기
 
 1. Linux(Ubuntu) Docker Container를 구동하기 위한 절차
 
-docker container run <docker-image-name> <command>
+Docker에서 ubuntu를 기반으로 하는 컨테이너 하나를 띄웁니다.
+
+$> docker container run ubuntu:latest 입력 후,
  
-$> docker container run ubuntu:latest
- 
-$> docker ps -a
+$> docker ps -a 로 컨테이너 생성이 잘 되었는지 확인합니다.
 
-$> docker container ps -a
-
-$> docker system df
-
-$> docker image ls
+$> docker image ls를 통해 방금 생성한 컨테이너의 repository(image)가 ubuntu인지 확인합니다.
 
 
 --------------------
 
-2. 설치된 ubuntu 컨테이너에 Telnet daemon 구동
+2. 설치된 ubuntu 컨테이너에 Telnet daemon 구동하기
 
-$> sudo apt-get install xinetd telnetd
+설치된 ubuntu 컨테이너에서 telnet이라는 23 포트를 사용하고자 한다면,
+
+root인 상태에서 $> sudo apt-get install xinetd telnetd 를 다운받습니다.
+
+다운이 끝나면 설정을 해주기 위해 vi를 여러 아래와 같이 입력합니다.
 
 $> vi /etc/xinetd.d/telnet
 
@@ -153,36 +153,43 @@ service telnet
     log_on_failure += USERID
 }
 
-$> /etc/init.d/xinetd restart
+그 후엔 $> /etc/init.d/xinetd restart 를 한 뒤, 아래가 모두 [OK] 상태가 되면 성공입니다.
 
-$> docker commit ub ub_telnet
+ * stopping internet superserver xinetd   [OK]
 
-$> docker run -itd -p 23:23 --name ubt ub_telnet bash
+ * starting internet superserver xinetd   [OK]
 
-putty로 telnet 접속 / 터미널에 telnet localhost 입력
+exit로 모두 나간 후, docker commit <컨테이너 이름> <새 컨테이너 이름>으로 새로운  image를 하나 더 뜹니다.
+
+새로운 image를 기반으로 23 포트를 연결해주는 새 컨테이너를 생성합니다
+
+$> docker run -itd -p 23:23 --name <새 컨테이너 이름> <새 image 이름> bash
+
+이렇게 만들어진 컨테이너에 attach / exec 하고 xinetd를 재실행합니다.
+
+모두  [OK] [OK]가 된다면 putty 실행 / 터미널에 telnet localhost 입력으로 접속 가능합니다.
 
 ----------
 
 
 3. 한글 사용 설정
 
-$> locale     
+한글이 안 써진다면, root인 상태에서  $> locale  을 확인합니다.   
 
-$> locale -a  
+$> locale -a  로 적용가능한 언어 리스트에 한국어가 없다면,
 
-$> apt-get install locales
+$> apt-get install locales 를 입력해 다운받습니다.
 
-$> cat /usr/share/i18n/SUPPORTED
+다운이 완료되면,  $> localedef -f UTF-8 -i ko_KR ko_KR.UTF-8 ,
 
-$> localedef -f UTF-8 -i ko_KR ko_KR.UTF-8
+$> locale-gen ko_KR.UTF-8 을 입력해 한글을 다운 받습니다.
 
-$> locale-gen ko_KR.UTF-8
+그 뒤, $> locale -a 로 다시 적용가능한 언어 리스트에 한국어가 있는지 확인합니다.
 
-$> locale -a
-
-#~/.profile에 추가
+#~/.profile에 
  
 LC_ALL=ko_KR.UTF-8 bash
+
 export LANGUAGE=ko
 
 ----------------
@@ -190,15 +197,17 @@ export LANGUAGE=ko
 
 4. Git 사용 설정 
 
-#> apt-get install git
+Git을 사용하려면 root가 아닌 사용하려는 user 상태에서 #> apt-get install git 로 설치합니다.
 
-#> git config --list
-
-#> git config --global user.name <github-username>
+#> git config --global user.name <github-username> 
 
 #> git config --global user.email <email>
 
-#> git config credential.helper store
+위 두 명령어를 통해 user이름과 이메일을 설정합니다.
 
-#> git clone <github-url>
+설정 상태는 #> git config  —list 로 확인 가능합니다.
+
+Git clone 하고 싶은 폴더를 만들어  #> git clone <github-url> 를 입력합니다.
+
+그 뒤로는 add, commit, push 를 이용해 git을 사용합니다.
 
