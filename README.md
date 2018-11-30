@@ -79,17 +79,17 @@ docker에서 생성하려면 mysql image의 컨테이너 안에서 #> mysql -u r
 
 root인 상태에서 새로운 user를 추가하기 위해,
  
-mysql> create user <user-name>@'<host>' identified by '<password>'; 를 입력합니다.
+mysql> create user <user 이름>@'<host 이름>' identified by '<password>'; 를 입력합니다.
  
 user가 생성되었다면 권한을 설정해줍니다.
  
 모든 권한을 부여한다면, 
 
-mysql> grant all privileges on *.* to '<user 이름>'@'<host>'; 
+mysql> grant all privileges on *.* to '<user 이름>'@'<host 이름 >'; 
  
 특정 DB의 권한만 부여한다면,
 
-mysql> grant all privileges on <DB>.* to '<user 이름>'@'<host>'';  
+mysql> grant all privileges on <DB>.* to '<user 이름>'@'<host 이름>'';  
 
 권한 설정을 마치면 mysql> flush privileges; 를 입력해 적용합니다.
 
