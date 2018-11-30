@@ -103,6 +103,7 @@ $> vi /etc/xinetd.d/telnet
 service telnet
 
 {
+
     disable = no
     
     flags = REUSE
