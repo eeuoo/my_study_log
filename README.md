@@ -1,5 +1,6 @@
 # my_study_log
 
+![default](https://user-images.githubusercontent.com/44750085/49266931-77187580-f49b-11e8-949c-b1ce484185e5.png)
 
 docker ubuntu container에 Oracle Express Edition 설치하기
 -----------
