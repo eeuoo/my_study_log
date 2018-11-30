@@ -71,7 +71,7 @@ Docker의 설치는 홈페이지에서 본인 PC의 OS에 맞춰 설치한다. �
 ------------
 문항 5.
 
-1) Linux(Ubuntu) Docker Container를 구동하기 위한 절차
+1. Linux(Ubuntu) Docker Container를 구동하기 위한 절차
 
 docker container run <docker-image-name> <command>
  
@@ -88,7 +88,7 @@ $> docker image ls
 
 
 
-2) 설치된 ubuntu 컨테이너에 Telnet daemon 구동
+2. 설치된 ubuntu 컨테이너에 Telnet daemon 구동
 
 $> sudo apt-get install xinetd telnetd
 
@@ -119,7 +119,7 @@ putty로 telnet 접속 / 터미널에 telnet localhost 입력
 
 
 
-3) 한글 사용 설정
+3. 한글 사용 설정
 
 $> locale     
 
@@ -143,7 +143,7 @@ export LANGUAGE=ko
 
 
 
-4) Git 사용 설정 
+4. Git 사용 설정 
 
 #> apt-get install git
 
