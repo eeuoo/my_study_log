@@ -3,6 +3,7 @@
 ------------
 문항 1.
 
+
 docker  실행 후, docker search oracle 해서 나온 리스트 중 하나 선정.
 
 $> docker pull sath89/oracle-xe-11g
@@ -18,6 +19,7 @@ $> docker exec -it oracle bas
 
 ------------
 문항 2.
+
 
 docker  실행 후, docker search mysql  해서 나온 리스트 중 mysql 설치(pull).
 
@@ -36,7 +38,9 @@ $> docker exec -it mysql5 bash
 ------------
 문항 3.
 
+
 1) 오라클 사용자(user) 생성과정
+
 
 SQL Developer > 접속 > 다른 사용자 > 사용자 생성
  - 사용자, 룰, 권한, 할당량, SQL, 결과
@@ -44,7 +48,9 @@ SQL Developer > 접속 > 다른 사용자 > 사용자 생성
 SQL Developer > 접속 > 다른 사용자 > 사용자 편집 / 삭제
 
 
+
 2) MYSQL 사용자(user) 생성과정
+
 
  #> mysql -u root -p
  
@@ -80,6 +86,8 @@ $> docker system df
 $> docker image ls
 
 
+
+
 2) 설치된 ubuntu 컨테이너에 Telnet daemon 구동
 
 $> sudo apt-get install xinetd telnetd
@@ -109,6 +117,8 @@ $> docker run -itd -p 23:23 --name ubt ub_telnet bash
 putty로 telnet 접속 / 터미널에 telnet localhost 입력
 
 
+
+
 3) 한글 사용 설정
 
 $> locale     
@@ -129,6 +139,8 @@ $> locale -a
  
 LC_ALL=ko_KR.UTF-8 bash
 export LANGUAGE=ko
+
+
 
 
 4) Git 사용 설정 
