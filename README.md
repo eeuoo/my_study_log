@@ -4,10 +4,15 @@
 문항 1.
 
 docker  실행 후, docker search oracle 해서 나온 리스트 중 하나 선정.
+
 $> docker pull sath89/oracle-xe-11g
+
 $> docker images
+
 $> docker run -d --name ora -p 8080:8080 -p 1521:1521 sath89/oracle-xe-11g
+
 $> docker ps
+
 $> docker exec -it oracle bas
 
 
@@ -15,25 +20,38 @@ $> docker exec -it oracle bas
 문항 2.
 
 docker  실행 후, docker search mysql  해서 나온 리스트 중 mysql 설치(pull).
+
 $> docker pull mysql:5.7
+
 $> docker images
+
 $> docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=r! --name mysql5 mysql:5.7
+
 $> docker ps
+
 $> docker exec -it mysql5 bash
+
  #> mysql -u root -p
 
 ------------
 문항 3.
 
 1) 오라클 사용자(user) 생성과정
+
 SQL Developer > 접속 > 다른 사용자 > 사용자 생성
  - 사용자, 룰, 권한, 할당량, SQL, 결과
+ 
 SQL Developer > 접속 > 다른 사용자 > 사용자 편집 / 삭제
 
+
 2) MYSQL 사용자(user) 생성과정
+
  #> mysql -u root -p
-mysql> create user <user-name>@'<host>' identified by '<password>';;
+ 
+mysql> create user <user-name>@'<host>' identified by '<password>';
+ 
 mysql> grant all privileges on *.* to '<user-name>'@'<host>';
+ 
 mysql> grant all privileges on <DB>.* to '<user-name>'@'<host>'';  
 
 ------------- 
@@ -48,18 +66,30 @@ Docker의 설치는 홈페이지에서 본인 PC의 OS에 맞춰 설치한다. �
 문항 5.
 
 1) Linux(Ubuntu) Docker Container를 구동하기 위한 절차
+
 docker container run <docker-image-name> <command>
+ 
 $> docker container run ubuntu:latest
+ 
 $> docker ps -a
+
 $> docker container ps -a
+
 $> docker system df
+
 $> docker image ls
 
+
 2) 설치된 ubuntu 컨테이너에 Telnet daemon 구동
+
 $> sudo apt-get install xinetd telnetd
+
 $> vi /etc/xinetd.d/telnet
+
  #!/bin/sh
+ 
 service telnet
+
 {
     disable = no
     flags = REUSE
@@ -69,29 +99,49 @@ service telnet
     server = /usr/sbin/in.telnetd
     log_on_failure += USERID
 }
+
 $> /etc/init.d/xinetd restart
+
 $> docker commit ub ub_telnet
+
 $> docker run -itd -p 23:23 --name ubt ub_telnet bash
+
 putty로 telnet 접속 / 터미널에 telnet localhost 입력
 
 
 3) 한글 사용 설정
-$> locale                 
-$> locale -a            
+
+$> locale     
+
+$> locale -a  
+
 $> apt-get install locales
+
 $> cat /usr/share/i18n/SUPPORTED
+
 $> localedef -f UTF-8 -i ko_KR ko_KR.UTF-8
+
 $> locale-gen ko_KR.UTF-8
+
 $> locale -a
- # .profile에 추가
- LC_ALL=ko_KR.UTF-8 bash
- export LANGUAGE=ko
+
+#~/.profile에 추가
+ 
+LC_ALL=ko_KR.UTF-8 bash
+export LANGUAGE=ko
+
 
 4) Git 사용 설정 
- #> apt-get install git
- #> git config --list
- #> git config --global user.name <github-username>
- #> git config --global user.email <email>
- #> git config credential.helper store
- #> git clone <github-url>
+
+#> apt-get install git
+
+#> git config --list
+
+#> git config --global user.name <github-username>
+
+#> git config --global user.email <email>
+
+#> git config credential.helper store
+
+#> git clone <github-url>
 
