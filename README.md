@@ -89,7 +89,7 @@ mysql> grant all privileges on *.* to '<user 이름>'@'<host>';
  
 특정 DB의 권한만 부여한다면,
 
-mysql> grant all privileges on <DB>.* to '<user >'@'<host>'';  
+mysql> grant all privileges on <DB>.* to '<user 이름>'@'<host>'';  
 
 권한 설정을 마치면 mysql> flush privileges; 를 입력해 적용합니다.
 
@@ -161,7 +161,7 @@ service telnet
 
 exit로 모두 나간 후, docker commit <컨테이너 이름> <새 컨테이너 이름>으로 새로운  image를 하나 더 뜹니다.
 
-새로운 image를 기반으로 23 포트를 연결해주는 새 컨테이너를 생성합니다
+새로운 image를 기반으로 23 포트를 연결해주는 새 컨테이너를 생성합니다.
 
 $> docker run -itd -p 23:23 --name <새 컨테이너 이름> <새 image 이름> bash
 
@@ -176,15 +176,15 @@ $> docker run -itd -p 23:23 --name <새 컨테이너 이름> <새 image 이름> 
 
 한글이 안 써진다면, root인 상태에서  $> locale  을 확인합니다.   
 
-$> locale -a  로 적용가능한 언어 리스트에 한국어가 없다면,
+$> locale -a  로 적용 가능한 언어리스트에 한국어가 없다면,
 
 $> apt-get install locales 를 입력해 다운받습니다.
 
 다운이 완료되면,  $> localedef -f UTF-8 -i ko_KR ko_KR.UTF-8 ,
 
-$> locale-gen ko_KR.UTF-8 을 입력해 한글을 다운 받습니다.
+$> locale-gen ko_KR.UTF-8 을 입력해 한글을 다운받습니다.
 
-그 뒤, $> locale -a 로 다시 적용가능한 언어 리스트에 한국어가 있는지 확인합니다.
+그 뒤, $> locale -a 로 다시 적용 가능한 언어리스트에 한국어가 있는지 확인합니다.
 
 #~/.profile에 
  
