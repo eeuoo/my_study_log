@@ -1,7 +1,8 @@
 ![sql](https://user-images.githubusercontent.com/44750085/49565371-50aa7c80-f96a-11e8-8450-922e8d7eecee.png)
 
-MySQL 데이터 베이스 구현
+# MySQL 데이터 베이스 구현
 
+------
 create table Enroll (
 
     id smallint unsigned not null auto_increment primary key,
