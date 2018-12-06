@@ -24,11 +24,12 @@ alter table Enroll add constraint  foreign key fk_subject(subject) references Su
 
 insert into Enroll(subject, student) select 1, id from Student order by rand();
 
-------
+
 update  Enroll  set subject =  (select id from Subject order by rand() limit 1) ;
 
 ---------
 -- unique index를 추가 후 실행
+
 insert into Enroll(student, subject) select stu.id ,(select id from Subject order by rand() limit 1)
 
   from Student  stu order by rand() on duplicate key update student = student;
