@@ -1,9 +1,9 @@
 ![sql](https://user-images.githubusercontent.com/44750085/49565371-50aa7c80-f96a-11e8-8450-922e8d7eecee.png)
 
-## MySQL 활용
+# MySQL 활용
 
 
-# 여러 테이블(학생, 과목, 교수, 수강내역) 생성하는 DDL 
+## 여러 테이블(학생, 과목, 교수, 수강내역) 생성하는 DDL 
 
 ~~~
 create table Student (
@@ -18,40 +18,34 @@ create table Student (
     ) ;
 ~~~
 ~~~
-create table Student (
-	id tinyint unsigned not null auto_increment,
-	name varchar(32) not null ,
-	addr varchar(30) not null ,
-	birth varchar(8) not null,
-	tel varchar(15) not null,
-	email varchar(31) not null,
-	regdt timestamp,
-	primary key(id)  
-    ) ;
+ create table Subject (
+	id int unsigned not null auto_increment primary key,
+    createdate timestamp not null default current_timestamp,
+    prof smallint unsigned, 
+    constraint foreign key fk_prof(prof) references Prof(id)
+    on delete set null
+    );   
 ~~~
 ~~~
-create table Student (
-	id tinyint unsigned not null auto_increment,
-	name varchar(32) not null ,
-	addr varchar(30) not null ,
-	birth varchar(8) not null,
-	tel varchar(15) not null,
-	email varchar(31) not null,
-	regdt timestamp,
-	primary key(id)  
-    ) ;
+create table Prof (
+	  id smallint unsigned not null auto_increment primary key,
+      name varchar(31) not null,
+      likecnt int not null default 0,
+      createdate timestamp not null default current_timestamp
+       );
+   
  ~~~
  ~~~
- create table Student (
-	id tinyint unsigned not null auto_increment,
-	name varchar(32) not null ,
-	addr varchar(30) not null ,
-	birth varchar(8) not null,
-	tel varchar(15) not null,
-	email varchar(31) not null,
-	regdt timestamp,
-	primary key(id)  
-    ) ;
+create table Enroll (
+	id smallint unsigned not null auto_increment primary key,
+    createdate timestamp not null default current_timestamp,
+    subject int unsigned, 
+    student int(11) unsigned
+    );
+
+alter table Enroll add constraint  fk_student foreign key ( student ) references Student(id) on delete cascade;
+alter table Enroll add constraint  foreign key fk_subject(subject) references Subject(id) on delete cascade;
+
  ~~~
  
 검증하기
@@ -71,7 +65,7 @@ show create table Enroll;
 show index from Enroll;
 ~~~
 
-# 학생 테이블과 과목 테이블 활용하여 수강내역 테이블에 테스트용 데이터 넣는 DML 구성하기
+## 학생 테이블과 과목 테이블 활용하여 수강내역 테이블에 테스트용 데이터 넣는 DML 구성하기
 
 학셍 테이블에 학생 1000명의 데이터가 들어있고, 과목 테이블에 수학, 영어, 국어, 역사, 체육, 가정, 기술, 화학, 사회의 10개 과목이 들어 있는 걸 전제로 수강내역 테이블을 구성한다면 다음과 같다.
 
@@ -139,7 +133,7 @@ select * from Enroll ;
 COMMIT ;
 ~~~
 
-# 동아리별 회원 테이블을 만들고 회원 50명 임의 배정하기
+## 동아리별 회원 테이블을 만들고 회원 50명 임의 배정하기
 
 ~~~
 create table Clubmember(
@@ -175,7 +169,7 @@ select club, student from Clubmember group by club, student order by 1, 2;
 COMMIT:
 ~~~
 
-# 학과 테이블 만들고 5개의 샘플 학과 데이터 등록 후, 학생 테이블에 학과 추가한 뒤 모든 학생에게 랜덤하게 배정해주기
+## 학과 테이블 만들고 5개의 샘플 학과 데이터 등록 후, 학생 테이블에 학과 추가한 뒤 모든 학생에게 랜덤하게 배정해주기
 
 ~~~
 create table Dept (
@@ -227,7 +221,7 @@ COMMIT;
 
 ~~~
 
-# 강의실 테이블 만들고 샘플 강의실 데이터 10개 등록 후, 과목 테이블에 강의실을 추가하고 배정해주기
+## 강의실 테이블 만들고 샘플 강의실 데이터 10개 등록 후, 과목 테이블에 강의실을 추가하고 배정해주기
 
 ~~~
 create table Classroom(
@@ -269,7 +263,7 @@ select classroom, count(*) from Subject group by classroom;
 COMMIT;
 ~~~
 
-# 데이터 활용하기
+## 데이터 활용하기
 
 1) 수강하는 과목별 중간고사, 기말고사 성적을 저장하는 테이블(Grade) 생성.
 
