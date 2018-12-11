@@ -56,9 +56,9 @@ $> docker ps 로 실행중임을 확인합니다. 실행되고 있지 않은 컨
 컨테이너는 $> docker exec -it <컨테이너 이름> bash / $> docker attach <컨테이너 이름> 을 입력해 사용합니다.
 
 컨테이너가 실행 아래와 같은 명령어를 입력한 뒤 사용합니다.
-
+~~~
  #> mysql -u root -p
- 
+~~~
  
 Oracle과 MYSQL에서 Database와 사용자(User) 생성하기
 ------------
@@ -66,12 +66,12 @@ Oracle과 MYSQL에서 Database와 사용자(User) 생성하기
 
 1) 오라클 사용자(user) 생성과정
 
-
+~~~
 SQL Developer> 접속 > 다른 사용자 > 사용자 생성
  - 사용자, 룰, 권한, 할당량, SQL, 결과
  
 SQL Developer > 접속 > 다른 사용자 > 사용자 편집 / 삭제
-
+~~~
 -------------
 
 2) MYSQL 사용자(user) 생성과정
@@ -85,13 +85,13 @@ mysql> create user <user 이름>@'<host 이름>' identified by '<password>'; 를
 user가 생성되었다면 권한을 설정해줍니다.
  
 모든 권한을 부여한다면, 
-
+~~~
 mysql> grant all privileges on *.* to '<user 이름>'@'<host 이름 >'; 
- 
+~~~
 특정 DB의 권한만 부여한다면,
-
+~~~
 mysql> grant all privileges on <DB>.* to '<user 이름>'@'<host 이름>'';  
-
+~~~
 권한 설정을 마치면 mysql> flush privileges; 를 입력해 적용합니다.
 
 생성된 user는 root에 접속했던 것과 마찬가지로, mysql -u <user 이름> -p로 접속하여 사용합니다.
