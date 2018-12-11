@@ -130,7 +130,7 @@ $> docker image ls를 통해 방금 생성한 컨테이너의 repository(image)�
 root인 상태에서 $> sudo apt-get install xinetd telnetd 를 다운받습니다.
 
 다운이 끝나면 설정을 해주기 위해 vi를 여러 아래와 같이 입력합니다.
-
+~~~
 $> vi /etc/xinetd.d/telnet
 
  #!/bin/sh
@@ -153,7 +153,7 @@ service telnet
     
     log_on_failure += USERID
 }
-
+~~~
 그 후엔 $> /etc/init.d/xinetd restart 를 한 뒤, 아래가 모두 [OK] 상태가 되면 성공입니다.
 
  * stopping internet superserver xinetd   [OK]
