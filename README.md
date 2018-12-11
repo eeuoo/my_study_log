@@ -155,11 +155,11 @@ service telnet
 }
 ~~~
 그 후엔 $> /etc/init.d/xinetd restart 를 한 뒤, 아래가 모두 [OK] 상태가 되면 성공입니다.
-
+~~~
  * stopping internet superserver xinetd   [OK]
 
  * starting internet superserver xinetd   [OK]
-
+~~~
 exit로 모두 나간 후, docker commit <컨테이너 이름> <새 컨테이너 이름>으로 새로운  image를 하나 더 뜹니다.
 
 새로운 image를 기반으로 23 포트를 연결해주는 새 컨테이너를 생성합니다.
@@ -186,24 +186,24 @@ $> apt-get install locales 를 입력해 다운받습니다.
 $> locale-gen ko_KR.UTF-8 을 입력해 한글을 다운받습니다.
 
 그 뒤, $> locale -a 로 다시 적용 가능한 언어리스트에 한국어가 있는지 확인합니다.
-
+~~~
 #~/.profile에 
  
 LC_ALL=ko_KR.UTF-8 bash
 
 export LANGUAGE=ko
-
+~~~
 ----------------
 
 
 4. Git 사용 설정 
 
 Git을 사용하려면 root가 아닌 사용하려는 user 상태에서 #> apt-get install git 로 설치합니다.
-
+~~~
 #> git config --global user.name <github-username> 
 
 #> git config --global user.email <email>
-
+~~~
 위 두 명령어를 통해 user이름과 이메일을 설정합니다.
 
 설정 상태는 #> git config  —list 로 확인 가능합니다.
