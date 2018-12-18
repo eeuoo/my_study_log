@@ -87,7 +87,7 @@ where club = (select max(id) from Club);
 ~~~
 
 * ### 지난 학기 데이터를 기준으로 인기 강좌 Top 3를 추천하는 procedure 작성하기 ( 가중치는 자유롭게 설정 )
-~~~
+~~~mysql
 drop procedure if exists lecture_best3;
 
 
