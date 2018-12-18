@@ -52,7 +52,7 @@ select f_student_avg(113) ;
 ~~~
 
 
-* ### Club Table에 클럽을 하나 추가하면 클럽 회원으로 임의의 한 학생을 회장으로 자동 등록되게 하는 Trigger 만들기
+* ### Club Table에서 클럽을 하나 추가하면 Clubmember Table 임의의 한 학생이 회장으로 자동 등록되는 Trigger 만들기
 ~~~mysql
 drop trigger if exists insert_club ;
 
