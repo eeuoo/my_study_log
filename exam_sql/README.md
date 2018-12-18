@@ -1,4 +1,6 @@
-![sql](https://user-images.githubusercontent.com/44750085/50139018-c7893300-02e3-11e9-9afd-b9ca0aa3ab24.png)
+
+![1](https://user-images.githubusercontent.com/44750085/50141923-14710780-02ec-11e9-82bb-57af4e2f65ec.png)
+
 
 * ### 학번, 학생명, 수강과목수, 전과목 평균 점수로 컬럼을 갖는 view 만들기
 ~~~mysql
