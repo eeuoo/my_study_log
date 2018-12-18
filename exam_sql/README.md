@@ -20,7 +20,7 @@ select * from all_of_student;
 ~~~
 
 * ### 학번을 주면 해당 학생의 전과목 평균 점수를 반환하는 function 만들기
-~~~
+~~~mysql
 
 drop function if exists f_student_avg ;
 
@@ -51,7 +51,7 @@ select f_student_avg(113) ;
 
 
 * ### Club Table에 클럽을 하나 추가하면 클럽 회원으로 임의의 한 학생을 회장으로 자동 등록되게 하는 Trigger 만들기
-~~~
+~~~mysql
 drop trigger if exists insert_club ;
 
 
@@ -138,7 +138,7 @@ call lecture_best3();
 ~~~
 
 * ### Oracle HR schema에서 Marketing 부서에 속한 직원의 last_name, salary, department_name 조회하기 ( 단, salary가 80번 부서의 평균보다 적게 받는 직원만)
-~~~
+~~~sql
 select e.last_name, e.salary, d.department_name 
 from employees e inner join departments d on e.department_id = d.department_id
 where d.department_name = 'Marketing'
@@ -146,7 +146,7 @@ and e.salary < (select round(avg(salary), -1) from employees where department_id
 ~~~
 
 * ### 과목별 Top 3 학생의 이름과 성적을 한 줄로 표현하는 리포트 출력하기
-~~~
+~~~mysql
 alter table Grade add column avr float default 0 ;
 
 update Grade set avr = (midterm + finalterm) / 2   ;
