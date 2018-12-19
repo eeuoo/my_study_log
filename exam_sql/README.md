@@ -8,12 +8,12 @@ drop view if exists all_of_student;
 
 create view all_of_student as 
 select stu.id as 'student_id', 
-		  max(stu.name) as 'student_name', 
-          count(*) as 'student_subjects',
-          round((sum(midterm + finalterm)/ 2 )/ count(*), 1) as 'student_avg'
+       max(stu.name) as 'student_name', 
+       count(*) as 'student_subjects',
+       round((sum(midterm + finalterm)/ 2 )/ count(*), 1) as 'student_avg'
 
 from Grade g inner join Enroll e on g.enroll = e.id
-					  inner join Student stu on e.student = stu.id 
+	     inner join Student stu on e.student = stu.id 
 
 group by stu.id;
 
@@ -37,7 +37,7 @@ RETURN
 (select ((sum(midterm + finalterm)/ 2 )/ count(*)) as 'student_avg'
 
 from Grade g inner join Enroll e on g.enroll = e.id
-					  inner join Student stu on e.student = stu.id 
+	     inner join Student stu on e.student = stu.id 
 where stu.id = _stu_id
 group by stu.id) ;
 
@@ -67,14 +67,14 @@ BEGIN
 
 -- 클럽에 임의의 회원 50명을 배정해준다
 insert into Clubmember(club, student)
-select (select id from Club where name = NEW.name), id from Student
+ select (select id from Club where name = NEW.name), id from Student
  where id not in (select student from Clubmember where level = 2 and club = (select id from Club where name = NEW.name) )
  order by rand() limit 50;
 
 -- 배정된 50명의 학생 중 임의의 한 학생을 회장으로 등록한다
 update Clubmember set level = 2 
 where club = (select id from Club where name = NEW.name)
-					order by rand() limit 1 ;
+order by rand() limit 1 ;
 
 END //
 
@@ -105,29 +105,29 @@ drop view if exists lecture_base1;
 
 create view lecture_base1 as
 select  max(sub.name) as sub_name, 
-		    count(*)  as student_cnt, 
-            round(avg(g.avr), 2)as total_avg , 
-            max(p.name) as prof_name, 
-            max(p.likecnt) as prof_likecnt
+        count(*)  as student_cnt, 
+        round(avg(g.avr), 2)as total_avg , 
+        max(p.name) as prof_name, 
+        max(p.likecnt) as prof_likecnt
 from Grade g inner join Enroll e on g.enroll = e.id
-					  inner join Subject sub on e.subject = sub.id
-					  inner join Prof p on sub.prof = p.id
+	     inner join Subject sub on e.subject = sub.id
+	     inner join Prof p on sub.prof = p.id
 group by sub.id ;
 
 drop view if exists lecture_base2;
 
 create view lecture_base2 as
 select ( student_cnt / (select sum(student_cnt) from lecture_base1) )* 100 as stu_cnt_100, 
-           ( total_avg / (select sum(total_avg) from lecture_base1) ) * 100 as total_avg_100, 
-           ( prof_likecnt / (select sum(prof_likecnt) from lecture_base1) ) * 100 as p_likecnt_100,
-            sub_name,
-            prof_name
+       ( total_avg / (select sum(total_avg) from lecture_base1) ) * 100 as total_avg_100, 
+       ( prof_likecnt / (select sum(prof_likecnt) from lecture_base1) ) * 100 as p_likecnt_100,
+        sub_name,
+        prof_name
 from lecture_base1;
 
 
 select ( ( stu_cnt_100 ) * 2 + (total_avg_100) * 3 + (p_likecnt_100) *5  ) as lecture_value,
-			sub_name,
-            prof_name
+	sub_name,
+        prof_name
 from lecture_base2
 order by lecture_value desc limit 3;
  
@@ -174,7 +174,6 @@ CREATE VIEW v_grade_enroll AS
 
 select subject_name, student_name, max(avr)
 from v_grade_enroll 
-group by subject_name, student_name
 order by 1, 3 desc ;
 
 
@@ -188,31 +187,31 @@ create procedure sp_subject_top_3( )
 
 BEGIN
 
-	declare _isdone boolean default False;
+    declare _isdone boolean default False;
     declare _sub_name varchar(31);
     declare `_stu_name` varchar(31);
     declare _score smallint;
 
 	
-	declare top_3 CURSOR FOR
-		select subject_name, student_name, max(avr)
-		from v_grade_enroll 
-		group by subject_name, student_name 
-		order by 1, 3 desc;
+    declare top_3 CURSOR FOR
+	select subject_name, student_name, max(avr)
+	from v_grade_enroll 
+	group by subject_name, student_name 
+	order by 1, 3 desc;
     
     declare continue handler 
         for not found set _isdone = True;
         
-	drop table if exists t_g_top_3;
+    drop table if exists t_g_top_3;
     
     create temporary table t_g_top_3 (
         `sub_name` varchar(31) default ' ' primary key,
         `1st_stu` varchar(31) default ' ',
         `1st_score` smallint default 0 ,
-		`2nd_stu` varchar(31) default ' ',
+	`2nd_stu` varchar(31) default ' ',
         `2nd_score` smallint default 0 ,
         `3rd_stu` varchar(31) default ' ',
-		`3rd_score` smallint default 0,
+	`3rd_score` smallint default 0,
         `cnt` smallint default 0 
          );
 
@@ -227,21 +226,22 @@ BEGIN
         IF not exists (select * from t_g_top_3 where sub_name = `_sub_name`) THEN
             insert into t_g_top_3(`sub_name`, `1st_stu`, `1st_score`) value(_sub_name, _stu_name, _score );
 
-       ELSEIF  exists (select * from t_g_top_3 where sub_name = `_sub_name` and cnt = 0) THEN
+        ELSEIF  exists (select * from t_g_top_3 where sub_name = `_sub_name` and cnt = 0) THEN
              update t_g_top_3 set `2nd_stu`= _stu_name, `2nd_score` = _score, cnt = cnt + 1
               where `sub_name` = _sub_name and cnt = 0  ;
 
-		ELSE 
+        ELSE 
              update t_g_top_3 set `3rd_stu`= _stu_name, `3rd_score` = _score, cnt = cnt + 1
               where `sub_name` = _sub_name and cnt = 1;
              
         END IF;
         
     
-		IF _isdone THEN
+	IF _isdone THEN
             LEAVE loop1;
         END IF;
        
+    
     END LOOP loop1;
     
   
