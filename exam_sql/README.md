@@ -169,7 +169,7 @@ CREATE VIEW v_grade_enroll AS
     FROM Grade g
        inner JOIN Enroll e ON g.enroll = e.id
        inner JOIN Student stu ON e.student = stu.id
-	   inner JOIN Subject sub ON e.subject = sub.id ;
+       inner JOIN Subject sub ON e.subject = sub.id ;
  
 
 select subject_name, student_name, max(avr)
