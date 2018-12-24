@@ -37,7 +37,7 @@
 위 데이터 표준 지침에 의거하여 아래 4개 테이블들을 MySQL에서 생성하는 스크립트 작성하기 (EMPLOYEES, JOBS, JOB_HISTORY, DEPARTMENTS)
 -----------------------------------------------------------------------
 
-~~~
+~~~sql
 
 drop table if exists Departments;
 
