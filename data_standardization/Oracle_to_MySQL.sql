@@ -33,8 +33,9 @@ create table Employees (
       manager_id int unsigned not null default 0,
       job_id varchar(10) not null default ' ',
       department_id int unsigned not null default 0 ,
-     constraint foreign key fk_jobs(job_id) references Jobs(id),
-     constraint foreign key fk_departments(department_id) references Departments(id)
+      unique key (email),
+      constraint foreign key fk_jobs(job_id) references Jobs(id),
+      constraint foreign key fk_departments(department_id) references Departments(id)
 );
 
 alter table Employees  add constraint  fk_employees_manager foreign key ( manager_id ) references Employees(id) on delete cascade;
@@ -49,7 +50,7 @@ create table JobHistory(
       job_id varchar(10) not null default ' ',
       department_id int unsigned not null default 0,
       constraint foreign key fk_employees(employee_id) references Employees(id),
-     constraint foreign key fk_jobs(job_id) references Jobs(id),
-     constraint foreign key fk_departments(department_id) references Departments(id),
+      constraint foreign key fk_jobs(job_id) references Jobs(id),
+      constraint foreign key fk_departments(department_id) references Departments(id),
       primary key (employee_id, start_date)
 );
