@@ -124,15 +124,6 @@ res.raise_for_status()
 res = session.get('http://ticket.yes24.com/Pages/Perf/Sale/PerfSaleProcess.aspx?IdPerf=32098')
 res.raise_for_status()
 
-soup1 = BeautifulSoup(res.text, "html.parser")
-
-
-date = soup1.select_one('#tk_day').text
-print(date)
-
-
-exit()
-
 
 #접근할 페이지 2
 
