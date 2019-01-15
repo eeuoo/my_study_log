@@ -294,6 +294,8 @@ tm.split_2(seat_info2)
 ```
 
 ```python
+# 예매 자동화하기
+
 from time import sleep
 from selenium import webdriver
 from bs4 import BeautifulSoup
