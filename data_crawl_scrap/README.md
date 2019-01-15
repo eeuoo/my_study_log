@@ -338,6 +338,8 @@ res = browser.find_element_by_css_selector("div.fr img").click()
 
 #좌석 선택하기
 
+# ToDo 좌석 선택 자동화 (잔여 좌석 중 좌서 번호가 낮은 것, 앞 쪽에 있는 거 선택)
+
 browser.switch_to.frame(browser.find_element_by_name("ifrmSeatFrame"))
 
 
