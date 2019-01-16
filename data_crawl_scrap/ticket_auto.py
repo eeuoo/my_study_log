@@ -3,8 +3,8 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 
 
-USER = "본인 아이디"
-PASS = "본인 비번"
+USER = "dlguswn512"
+PASS = "lhzoo4295"
 
 browser = webdriver.Chrome()
 browser.implicitly_wait(3)
