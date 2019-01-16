@@ -65,8 +65,8 @@ soup2 = BeautifulSoup(res.text, "html.parser")
 
 idHall = soup2.select_one('ul#ulTimeData >li').attrs['idhall']
 idTime = soup2.select_one('ul#ulTimeData >li').attrs['value']
-saleclose = soup2.select_one('ul#ulTimeData >li').attrs['saleclose']
+# saleclose = soup2.select_one('ul#ulTimeData >li').attrs['saleclose']
 
 print(idHall)
 print(idTime)
-print(saleclose)
+# print(saleclose)

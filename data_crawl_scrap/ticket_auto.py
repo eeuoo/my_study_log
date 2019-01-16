@@ -51,13 +51,16 @@ browser.find_element_by_class_name('booking').click()
 
 print("좌석선택완료")
 
+
 browser.switch_to_default_content()
 
 print("다시원래창으로 돌아옴")
 
+
 browser.find_element_by_xpath('//*[@id="StepCtrlBtn03"]/a[2]/img').click()
 
 print("할인쿠폰 다음버튼")
+
 
 sleep(3)
 browser.find_element_by_xpath('//*[@id="StepCtrlBtn04"]/a[2]/img').click()

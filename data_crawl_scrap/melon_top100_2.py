@@ -69,7 +69,6 @@ dic = sorted(dic.items(), key=lambda d : d[1]['rank'])
 
 pprint(dic)
 
-exit()
 
-for i in dic.values() :
-    print("{}위 {} - {}  ♡ {}".format(i['rank'], i['name'], i['artist'], i['likeCnt']))
+# for i in dic.values() :
+#     print("{}위 {} - {}  ♡ {}".format(i['rank'], i['name'], i['artist'], i['likeCnt']))
