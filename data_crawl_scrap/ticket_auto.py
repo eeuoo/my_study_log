@@ -3,8 +3,8 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 
 
-USER = "본인 아이디"
-PASS = "본인 비번"
+USER = "dlguswn512"
+PASS = "lhzoo4295"
 
 browser = webdriver.Chrome()
 browser.implicitly_wait(3)
@@ -51,13 +51,16 @@ browser.find_element_by_class_name('booking').click()
 
 print("좌석선택완료")
 
+
 browser.switch_to_default_content()
 
 print("다시원래창으로 돌아옴")
 
+
 browser.find_element_by_xpath('//*[@id="StepCtrlBtn03"]/a[2]/img').click()
 
 print("할인쿠폰 다음버튼")
+
 
 sleep(3)
 browser.find_element_by_xpath('//*[@id="StepCtrlBtn04"]/a[2]/img').click()

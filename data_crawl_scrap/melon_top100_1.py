@@ -53,7 +53,6 @@ get_list(trs1)
 get_list(trs2)
 
 
-
 for j in jsonData['contsLike']:
     songId = str(j['CONTSID'])
     x = dic.get(songId)

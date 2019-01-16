@@ -34,14 +34,6 @@ res.raise_for_status()
 res = session.get('http://ticket.yes24.com/Pages/Perf/Sale/PerfSaleProcess.aspx?IdPerf=32098')
 res.raise_for_status()
 
-soup1 = BeautifulSoup(res.text, "html.parser")
-
-
-date = soup1.select_one('#tk_day').text
-print(date)
-
-
-exit()
 
 
 #접근할 페이지 2
@@ -62,20 +54,19 @@ page2_params = {
     'pIsMania': '0'
 }
 
-res2 =  session.post('http://ticket.yes24.com/Pages/Perf/Sale/Ajax/Perf/PerfTime.aspx',headers=page2_headers, data=page2_params)
-res2.raise_for_status()
-
+res =  session.post('http://ticket.yes24.com/Pages/Perf/Sale/Ajax/Perf/PerfTime.aspx',headers=page2_headers, data=page2_params)
+res.raise_for_status()
 
 
 
 
 #idHall과 idTime 추출
-soup2 = BeautifulSoup(res2.text, "html.parser")
+soup2 = BeautifulSoup(res.text, "html.parser")
 
 idHall = soup2.select_one('ul#ulTimeData >li').attrs['idhall']
 idTime = soup2.select_one('ul#ulTimeData >li').attrs['value']
-saleclose = soup2.select_one('ul#ulTimeData >li').attrs['saleclose']
+# saleclose = soup2.select_one('ul#ulTimeData >li').attrs['saleclose']
 
 print(idHall)
 print(idTime)
-print(saleclose)
+# print(saleclose)
