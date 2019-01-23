@@ -13,10 +13,10 @@ def get_songInfo (songId) :
 
     html = requests.get(url, headers=headers)
     soup = BeautifulSoup(html.text, 'html.parser')
-
-    genre = soup.select_one( 'div.entry > div.meta > dl > dd:nth-child(6)').text
-    releaseDate = soup.select_one('div.entry > div.meta > dl > dd:nth-child(4)').text.replace('.','')
-    album = soup.select_one('div.entry > div.meta > dl > dd:nth-child(2) > a').text
+    
+    genre = soup.select_one( 'div.entry > div.meta > dl > dd:nth-of-type(3)').text
+    releaseDate = soup.select_one('div.entry > div.meta > dl > dd:nth-of-type(2)').text.replace('.','')
+    album = soup.select_one('div.entry > div.meta > dl > dd:nth-of-type(1) > a').text
     
 
     tempDic = {'releaseDate' : releaseDate , "CONTSID": '', "albumId": '' , "album" : album, "genre" : genre, 'likecnt' : '', 'title' : '', 'singer' : ''}

@@ -33,10 +33,11 @@ def get_albumInfo (albumId) :
 
     albumlike = jsonData['contsLike'][0]['SUMMCNT']
     rate = rateData["infoGrade"]["TOTAVRGSCORE"]
-    agency = soup.select_one('div.entry > div.meta > dl > dd:nth-child(8)').text
+    agency = soup.select_one('div.entry > div.meta > dl > dd:nth-of-type(4)').text
     albumtype = soup.select_one('div.entry > div.info > span').text.strip()
     albumtype = re.findall("\[(.*)\]", albumtype)[0].strip()
 
-    tempDic = {'releaseDate' : '', "agency": agency, "albumId": albumId, "rate" : rate, 'albumlike' : albumlike, 'title' : '', 'albumtype' : albumtype, 'singer' : ''}
+    tempDic = {"agency": agency, "albumId": albumId, "rate" : rate, 'albumlike' : albumlike, 'albumtype' : albumtype}
 
     return tempDic
+

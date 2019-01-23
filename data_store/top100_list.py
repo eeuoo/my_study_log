@@ -31,20 +31,12 @@ def get_list (trs) :
         rank = td.select('td:nth-child(2) > div > span.rank')[0].text
         name = td.select('td:nth-child(6) > div > div > div.ellipsis.rank01 > span > a')[0].text
         artist = td.select('td:nth-child(6) > div > div > div.ellipsis.rank02 > a')
+        artist = ", ".join([a.text for a in artist])
         likeCnt = ''
 
         href = td.select('td:nth-child(4) > div > a')[0].attrs['href']
 
         albumId = re.findall("\'(.*)\'", href)[0]
-
-
-        if len(artist) > 2 :
-            artistList = []
-            for i in artist :
-                artistList.append(i.text)
-            artist = artistList
-        else : artist = artist[0].text
-
 
         tempDic = {'rank' : int(rank), "CONTSID": dataSongNo, "name": name , "artist" : artist, "likecnt" : likeCnt, 'albumId' : albumId}
 
@@ -97,4 +89,6 @@ def set_likecnt(dic):
 set_likecnt(dic)
 set_likecnt(sinfodic)
 
-# dic = sorted(dic.items(), key=lambda d : d[1]['rank'])
+dic = sorted(dic.items(), key=lambda d : d[1]['rank'])
+
+pprint(dic)
