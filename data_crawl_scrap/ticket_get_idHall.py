@@ -47,6 +47,7 @@ page2_headers = { 'Referer': 'http://ticket.yes24.com/Pages/Perf/Sale/PerfSalePr
 
 # ToDo 공연마다 회차정보(날짜) 받아서 pDay에 넣기
 # ToDo 공연마다 회차정보(공연번호) 받아서 pIdPerf에 넣기
+
 page2_params = {
     'pDay': '20190427',
     'pIdPerf': '32098',
