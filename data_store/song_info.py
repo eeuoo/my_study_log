@@ -19,7 +19,7 @@ def get_songInfo (songId) :
     album = soup.select_one('div.entry > div.meta > dl > dd:nth-of-type(1) > a').text
     
 
-    tempDic = {'releaseDate' : releaseDate , "CONTSID": '', "albumId": '' , "album" : album, "genre" : genre, 'likecnt' : '', 'title' : '', 'singer' : ''}
+    tempDic = {'releaseDate' : releaseDate, "album" : album, "genre" : genre }
 
     return tempDic
 

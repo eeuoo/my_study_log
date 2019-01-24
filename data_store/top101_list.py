@@ -4,6 +4,7 @@ from pprint import pprint
 import re, pymysql
 from song_info import get_songInfo
 from album_info import get_albumInfo
+from get_songlike import get_songLike
 
 url = "https://www.melon.com/chart/index.htm"
 
@@ -18,10 +19,11 @@ trs1 = soup.select('#lst50')
 trs2 = soup.select('#lst100')
 
 
-
-dic = {}
-sinfodic = {}
-ainfodic = {}
+top100list = []
+songinfolist = []
+albuminfolist = []
+singerList = []
+sslist = []
 
 def get_list (trs) :
         
@@ -30,18 +32,15 @@ def get_list (trs) :
         dataSongNo = td.attrs['data-song-no']
         rank = td.select('td:nth-of-type(2) > div > span.rank')[0].text
         name = td.select('td:nth-of-type(6) > div > div > div.ellipsis.rank01 > span > a')[0].text
-        artist = td.select('td:nth-of-type(6) > div > div > div.ellipsis.rank02 > a')
-        artist = ", ".join([a.text for a in artist])
-        likeCnt = ''
+        artists = td.select('td:nth-of-type(6) > div > div > div.ellipsis.rank02 > a')
+        artist = ", ".join([a.text for a in artists])
+        likeCnt = get_songLike(dataSongNo)
 
         href = td.select('td:nth-of-type(4) > div > a')[0].attrs['href']
-
         albumId = re.findall("\'(.*)\'", href)[0]
 
-        tempDic = {'rank' : int(rank), "CONTSID": dataSongNo, "name": name , "artist" : artist, "likecnt" : likeCnt, 'albumId' : albumId}
-
-        dic[dataSongNo] = tempDic
-
+        top100 = (int(rank), dataSongNo, name , artist, likeCnt, albumId)
+        top100list.append(top100)
 
         songInfoDic = get_songInfo(dataSongNo)
        
@@ -49,9 +48,8 @@ def get_list (trs) :
         album = songInfoDic['album']
         genre = songInfoDic['genre'] 
 
-        stempDic = {'releaseDate' : releaseDate , "CONTSID": dataSongNo, "albumId": albumId, "album" : album, "genre" : genre, 'likecnt' : likeCnt, 'title' : name, 'singer' : artist}
-
-        sinfodic[dataSongNo] = stempDic
+        songinfos = (releaseDate , dataSongNo, albumId, album, genre, likeCnt, name, artist)
+        songinfolist.append(songinfos)
 
         albumInfoDic =  get_albumInfo(albumId)
 
@@ -60,39 +58,27 @@ def get_list (trs) :
         rate = albumInfoDic['rate'] 
         albumtype = albumInfoDic['albumtype']
 
-        atempDic = {'releaseDate' : releaseDate, "agency": agency, "albumId": albumId, "rate" : rate, 'albumlike' : albumlike, 'title' : name, 'albumtype' : albumtype, 'singer' : artist}
+        albuminfos = (releaseDate, agency, albumId, album, rate, albumlike, albumtype, artist)
+        albuminfolist.append(albuminfos)
+        
+        for singer in artists :
+            sid = singer.attrs["href"]
+            sid = re.findall("\'(.*)\'", sid)[0]
+            
+            al = (sid, singer.text)
+            singerList.append(al)
 
-        ainfodic[albumId] = atempDic
+            sl = (dataSongNo, name, singer.text, sid)
+            sslist.append(sl)
+    
     
 
 get_list(trs1)
 get_list(trs2)
 
-
-jsonUrl = "https://www.melon.com/commonlike/getSongLike.json?"
-
-jsonHeaders = { 'Referer': 'https://www.melon.com/chart/index.htm',
-'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'
-}
-
-jsonparams = { "contsIds" : ",".join(dic.keys()) }
-
-
-jsonHtml = requests.get(jsonUrl, headers=jsonHeaders, params=jsonparams)
-jsonData = json.loads(jsonHtml.text)
-
-def set_likecnt(dic):
-    for j in jsonData['contsLike']:
-        songId = str(j['CONTSID'])
-        x = dic.get(songId)
-        if x == None :
-            continue
-        x['likecnt'] = j['SUMMCNT']
-
-set_likecnt(dic)
-set_likecnt(sinfodic)
-
-dic = sorted(dic.items(), key=lambda d : d[1]['rank'])
+albuminfolist = (list(set(albuminfolist)))
+singerList = list(set(singerList))
+sslist = list(set(sslist))
 
 
 # mysql에 데이터 넣기.
@@ -105,37 +91,33 @@ def get_mysql_conn(db):
         db=db,
         charset='utf8')
 
-# sql_truncate = "truncate table DailyList"
+
 sql_dailyList = "insert into DailyList(rank, song_id, title, singer, likecnt, album_id) values(%s,%s,%s,%s,%s,%s)"
-sql_songinfo = '''insert into SongInfo(song_id, album_name, album_id, genre, likecnt, release_date, singer, title) values(%s,%s,%s,%s,%s,%s,%s,%s)'''
-sql_albuminfo = '''insert into AlbumInfo(release_date, agency, album_id, rate, album_likecnt, album_name, type, singer) values(%s,%s,%s,%s,%s,%s,%s,%s)'''
 
+sql_dupl_album = "insert into AlbumInfo(release_date, agency, album_id, album_name, rate, album_likecnt, type, singer) values(%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE release_date=release_date, agency=agency, album_id=album_id, album_name=album_name, type=type, singer=singer "
 
-dailylistData =[]
-songinfoData = []
-albuminfoData = []
+sql_dupl_song = "insert into SongInfo(release_date, song_id, album_id, album_name, genre, likecnt, title, singer) values(%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE song_id=song_id, title = title, album_name = album_name, album_id = album_id , genre =genre,release_date=release_date, singer=singer;"
 
-for row in dic:
-        ll =[row[1]['rank'], row[1]['CONTSID'], row[1]['name'], row[1]['artist'], row[1]['likecnt'], row[1]['albumId'] ]
-        dailylistData.append(ll)
+sql_dupl_singer = "insert ignore into Singer(singer_id, singer_name) values(%s, %s)"
 
-for i in sinfodic.values():
-        sl = [i['CONTSID'], i['album'], i['albumId'], i['genre'], i['likecnt'], i['releaseDate'], i['singer'], i['title']]
-        songinfoData.append(sl)
-
-for i in ainfodic.values():
-        al = [ i['releaseDate'], i['agency'], i["albumId"], i["rate"], i['albumlike'],i['title'], i['albumtype'], i['singer'] ]
-        albuminfoData.append(al)
-
+sql_dupl_ss = "insert ignore into MappingSongArtist (song_id, title, singer_name, singer_id) values(%s, %s, %s, %s)"
 
 conn = get_mysql_conn('hjdb')
 
 with conn:
     cur = conn.cursor()
+
+    cur.executemany(sql_dupl_album, albuminfolist)
+    print("반영된 수", cur.rowcount)
+
+    cur.executemany(sql_dupl_song, songinfolist)
+    print("반영된 수", cur.rowcount)
    
-    cur.executemany(sql_songinfo, dailylistData)
-    cur.executemany(sql_songinfo, songinfoData)
-    cur.executemany(sql_albuminfo, albuminfoData)
-       
+    cur.executemany(sql_dailyList, top100list)
+    print("반영된 수", cur.rowcount)
     
-    print("반영 된 수", cur.rowcount)
+    cur.executemany(sql_dupl_singer, singerList)
+    print("반영된 수", cur.rowcount)
+
+    cur.executemany(sql_dupl_ss, sslist)
+    print("반영된 수", cur.rowcount)
