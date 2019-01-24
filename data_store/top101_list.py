@@ -115,9 +115,9 @@ dailylistData =[]
 songinfoData = []
 albuminfoData = []
 
-for i in dic.values():
-        ll = [ i['rank'], i["CONTSID"], i["name"], i["artist"], i["likecnt"], i['albumId'] ]
-        dailylistData.appen(ll)
+for row in dic:
+        ll =[row[1]['rank'], row[1]['CONTSID'], row[1]['name'], row[1]['artist'], row[1]['likecnt'], row[1]['albumId'] ]
+        dailylistData.append(ll)
 
 for i in sinfodic.values():
         sl = [i['CONTSID'], i['album'], i['albumId'], i['genre'], i['likecnt'], i['releaseDate'], i['singer'], i['title']]
@@ -133,6 +133,7 @@ conn = get_mysql_conn('hjdb')
 with conn:
     cur = conn.cursor()
    
+    cur.executemany(sql_songinfo, dailylistData)
     cur.executemany(sql_songinfo, songinfoData)
     cur.executemany(sql_albuminfo, albuminfoData)
        

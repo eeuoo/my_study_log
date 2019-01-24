@@ -4,6 +4,8 @@ from pprint import pprint
 import re
 from song_info import get_songInfo
 from album_info import get_albumInfo
+import csv, codecs
+
 
 url = "https://www.melon.com/chart/index.htm"
 
@@ -45,21 +47,24 @@ def get_list (trs) :
 
         songInfoDic = get_songInfo(dataSongNo)
        
-        songInfoDic['CONTSID'] = dataSongNo
-        songInfoDic['albumId'] = albumId
-        songInfoDic['likecnt'] = likeCnt
-        songInfoDic['title'] = name
-        songInfoDic['singer'] = artist
+        releaseDate = songInfoDic['releaseDate']
+        album = songInfoDic['album']
+        genre = songInfoDic['genre'] 
 
-        sinfodic[dataSongNo] = songInfoDic
+        stempDic = {'releaseDate' : releaseDate , "CONTSID": dataSongNo, "albumId": albumId, "album" : album, "genre" : genre, 'likecnt' : likeCnt, 'title' : name, 'singer' : artist}
+
+        sinfodic[dataSongNo] = stempDic
 
         albumInfoDic =  get_albumInfo(albumId)
 
-        albumInfoDic['title'] = name
-        albumInfoDic['singer'] = artist
-        albumInfoDic['releaseDate'] = songInfoDic['releaseDate']
+        albumlike = albumInfoDic['albumlike']
+        agency = albumInfoDic['agency']
+        rate = albumInfoDic['rate'] 
+        albumtype = albumInfoDic['albumtype']
 
-        ainfodic[albumId] = albumInfoDic 
+        atempDic = {'releaseDate' : releaseDate, "agency": agency, "albumId": albumId, 'album' : album, "rate" : rate, 'albumlike' : albumlike, 'albumtype' : albumtype, 'singer' : artist}
+
+        ainfodic[albumId] = atempDic
     
 
 get_list(trs1)
@@ -91,4 +96,30 @@ set_likecnt(sinfodic)
 
 dic = sorted(dic.items(), key=lambda d : d[1]['rank'])
 
-pprint(dic)
+
+with codecs.open('./melon_dailyList.csv', 'w', encoding='utf-8') as ff:
+    writer = csv.writer(ff, delimiter=',', quotechar='"')
+
+    writer.writerow(['랭킹', '곡 id', '곡명', '가수', '좋아요수','앨범id'])
+
+    for row in dic:
+        writer.writerow([row[1]['rank'], row[1]['CONTSID'], row[1]['name'], row[1]['artist'], row[1]['likecnt'], row[1]['albumId'] ])
+        
+   
+with codecs.open('./melon_songinfo.csv', 'w', encoding='utf-8') as ff:
+        writer = csv.writer(ff, delimiter=',', quotechar='"')
+
+        writer.writerow(['곡 id', '곡명', '앨범명', '앨범id', '장르', '좋아요수','발매일','가수'])
+
+        for i in sinfodic.values():
+               writer.writerow([i['CONTSID'], i['title'], i['album'], i['albumId'], i['genre'], i['likecnt'], i['releaseDate'], i['singer'] ])
+
+
+with codecs.open('./melon_albuminfo.csv', 'w', encoding='utf-8') as ff:
+        writer = csv.writer(ff, delimiter=',', quotechar='"')
+
+        writer.writerow(['발매일', '기획사', '앨범id','앨범', '평점', '좋아요수', '앨범 타입', '가수'])
+
+        for i in ainfodic.values():
+                writer.writerow([ i['releaseDate'], i['agency'], i["albumId"], i['album'], i["rate"], i['albumlike'], i['albumtype'], i['singer'] ])
+        
