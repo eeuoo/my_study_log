@@ -4,7 +4,7 @@
 
 ## Melon Top100 크롤하여 MySQL에 저장하기
 
-### Crawl, Migration, Store   - Python
+### Crawl, Store   - Python
 * melon top 100 페이지에서 유의미한 데이터를 크롤한다.
 * 유의미한 데이터는 top100 리스트, 노래 상세 정보, 앨범 상세 정보, 가수 등으로 구성하였다.
 
