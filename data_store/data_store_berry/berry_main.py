@@ -1,19 +1,10 @@
-import requests, json
+import requests, json, re, pymysql
 from bs4 import BeautifulSoup
-from pprint import pprint 
-import re, pymysql
-from song_info import get_songInfo
-from album_info import get_albumInfo
-from get_songlike import get_songLike
+import berry_utils as bu
 
-url = "https://www.melon.com/chart/index.htm"
+url = "http://vlg.berryservice.net:8099/melon/list"
 
-headers = {
-'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'
-}
-
-
-html = requests.get(url, headers=headers)
+html = requests.get(url)
 soup = BeautifulSoup(html.text, 'html.parser')
 trs1 = soup.select('#lst50')
 trs2 = soup.select('#lst100')
@@ -28,21 +19,23 @@ sslist = []
 def get_list (trs) :
         
     for td in trs:
-        
+
+        # Top100 구성
         dataSongNo = td.attrs['data-song-no']
         rank = td.select('td:nth-of-type(2) > div > span.rank')[0].text
         name = td.select('td:nth-of-type(6) > div > div > div.ellipsis.rank01 > span > a')[0].text
         artists = td.select('td:nth-of-type(6) > div > div > div.ellipsis.rank02 > a')
         artist = ", ".join([a.text for a in artists])
-        likeCnt = get_songLike(dataSongNo)
+        likeCnt = bu.get_songLike(dataSongNo)
 
         href = td.select('td:nth-of-type(4) > div > a')[0].attrs['href']
         albumId = re.findall("\'(.*)\'", href)[0]
-
+        
         top100 = (int(rank), dataSongNo, name , artist, likeCnt, albumId)
         top100list.append(top100)
 
-        songInfoDic = get_songInfo(dataSongNo)
+        # 노래 정보 구성
+        songInfoDic = bu.get_songInfo(dataSongNo)
        
         releaseDate = songInfoDic['releaseDate']
         album = songInfoDic['album']
@@ -51,7 +44,8 @@ def get_list (trs) :
         songinfos = (releaseDate , dataSongNo, albumId, album, genre, likeCnt, name, artist)
         songinfolist.append(songinfos)
 
-        albumInfoDic =  get_albumInfo(albumId)
+        # 앨범 정보 구성
+        albumInfoDic =  bu.get_albumInfo(albumId)
 
         albumlike = albumInfoDic['albumlike']
         agency = albumInfoDic['agency']
@@ -61,6 +55,7 @@ def get_list (trs) :
         albuminfos = (releaseDate, agency, albumId, album, rate, albumlike, albumtype, artist)
         albuminfolist.append(albuminfos)
         
+        # 가수, 매핑(노래-가수) 구성
         for singer in artists :
             sid = singer.attrs["href"]
             sid = re.findall("\'(.*)\'", sid)[0]
@@ -70,7 +65,6 @@ def get_list (trs) :
 
             sl = (dataSongNo, name, singer.text, sid)
             sslist.append(sl)
-    
     
 
 get_list(trs1)
@@ -100,7 +94,7 @@ sql_dupl_song = "insert into SongInfo(release_date, song_id, album_id, album_nam
 
 sql_dupl_singer = "insert ignore into Singer(singer_id, singer_name) values(%s, %s)"
 
-sql_dupl_ss = "insert ignore into MappingSongArtist (song_id, title, singer_name, singer_id) values(%s, %s, %s, %s)"
+sql_dupl_ss = "insert ignore into MappingSS (song_id, title, singer_name, singer_id) values(%s, %s, %s, %s)"
 
 conn = get_mysql_conn('hjdb')
 
