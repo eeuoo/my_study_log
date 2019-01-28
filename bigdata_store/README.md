@@ -91,7 +91,6 @@ get_list(trs2)
 # 앨범 상세, 노래 상세, 맵핑에서 중복 제거
 albuminfolist = (list(set(albuminfolist)))
 singerList = list(set(singerList))
-sslist = list(set(sslist))
 
 
 # mysql에 데이터 넣기.
