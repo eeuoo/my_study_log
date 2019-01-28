@@ -38,6 +38,7 @@ def get_list (trs) :
         
     for td in trs:
         
+        # Top100 리스트 구성
         dataSongNo = td.attrs['data-song-no']
         rank = td.select('td:nth-of-type(2) > div > span.rank')[0].text
         name = td.select('td:nth-of-type(6) > div > div > div.ellipsis.rank01 > span > a')[0].text
@@ -51,6 +52,7 @@ def get_list (trs) :
         top100 = (int(rank), dataSongNo, name , artist, likeCnt, albumId)
         top100list.append(top100)
 
+        # 노래 상세 정보 구성
         songInfoDic = mu.get_songInfo(dataSongNo)
        
         releaseDate = songInfoDic['releaseDate']
@@ -60,6 +62,7 @@ def get_list (trs) :
         songinfos = (releaseDate , dataSongNo, albumId, album, genre, likeCnt, name, artist)
         songinfolist.append(songinfos)
 
+        # 앨범 상세 정보 구성
         albumInfoDic =  mu.get_albumInfo(albumId)
 
         albumlike = albumInfoDic['albumlike']
@@ -70,6 +73,7 @@ def get_list (trs) :
         albuminfos = (releaseDate, agency, albumId, album, rate, albumlike, albumtype, artist)
         albuminfolist.append(albuminfos)
         
+        # 가수, 맵핑(노래-가수) 구성
         for singer in artists :
             sid = singer.attrs["href"]
             sid = re.findall("\'(.*)\'", sid)[0]
@@ -81,10 +85,10 @@ def get_list (trs) :
             sslist.append(sl)
     
     
-
 get_list(trs1)
 get_list(trs2)
 
+# 앨범 상세, 노래 상세, 맵핑에서 중복 제거
 albuminfolist = (list(set(albuminfolist)))
 singerList = list(set(singerList))
 sslist = list(set(sslist))
