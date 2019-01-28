@@ -107,13 +107,13 @@ def get_mysql_conn(db):
 
 sql_dailyList = "insert into DailyList(rank, song_id, title, singer, likecnt, album_id) values(%s,%s,%s,%s,%s,%s)"
 
-sql_dupl_album = "insert into AlbumInfo(release_date, agency, album_id, album_name, rate, album_likecnt, type, singer) values(%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE release_date=release_date, agency=agency, album_id=album_id, album_name=album_name, type=type, singer=singer "
+sql_dupl_album = "insert into AlbumInfo(release_date, agency, album_id, album_name, rate, album_likecnt, type, singer) values(%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE rate=values(rate), album_likecnt=values(album_likecnt);"
 
-sql_dupl_song = "insert into SongInfo(release_date, song_id, album_id, album_name, genre, likecnt, title, singer) values(%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE song_id=song_id, title = title, album_name = album_name, album_id = album_id , genre =genre,release_date=release_date, singer=singer;"
+sql_dupl_song = "insert into SongInfo(release_date, song_id, album_id, album_name, genre, likecnt, title, singer) values(%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE likecnt=values(likecnt);"
 
-sql_dupl_singer = "insert ignore into Singer(singer_id, singer_name) values(%s, %s)"
+sql_ign_singer = "insert ignore into Singer(singer_id, singer_name) values(%s, %s)"
 
-sql_dupl_ss = "insert ignore into MappingSS (song_id, title, singer_name, singer_id) values(%s, %s, %s, %s)"
+sql_ign_ss = "insert ignore into MappingSS (song_id, title, singer_name, singer_id) values(%s, %s, %s, %s)"
 
 conn = get_mysql_conn('hjdb')
 
@@ -129,10 +129,10 @@ with conn:
     cur.executemany(sql_dailyList, top100list)
     print("반영된 수", cur.rowcount)
     
-    cur.executemany(sql_dupl_singer, singerList)
+    cur.executemany(sql_ign_singer, singerList)
     print("반영된 수", cur.rowcount)
 
-    cur.executemany(sql_dupl_ss, sslist)
+    cur.executemany(sql_ign_ss, sslist)
     print("반영된 수", cur.rowcount)
 
 ```
