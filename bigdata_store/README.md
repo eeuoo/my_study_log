@@ -13,10 +13,7 @@
 
 import requests, json, re, pymysql
 from bs4 import BeautifulSoup
-
-from song_info import get_songInfo
-from album_info import get_albumInfo
-from get_songlike import get_songLike
+import melon_utils as mu
 
 url = "https://www.melon.com/chart/index.htm"
 
@@ -41,13 +38,12 @@ def get_list (trs) :
         
     for td in trs:
         
-        # Top100 구성
         dataSongNo = td.attrs['data-song-no']
         rank = td.select('td:nth-of-type(2) > div > span.rank')[0].text
         name = td.select('td:nth-of-type(6) > div > div > div.ellipsis.rank01 > span > a')[0].text
         artists = td.select('td:nth-of-type(6) > div > div > div.ellipsis.rank02 > a')
         artist = ", ".join([a.text for a in artists])
-        likeCnt = get_songLike(dataSongNo)
+        likeCnt = mu.get_songLike(dataSongNo)
 
         href = td.select('td:nth-of-type(4) > div > a')[0].attrs['href']
         albumId = re.findall("\'(.*)\'", href)[0]
@@ -55,8 +51,7 @@ def get_list (trs) :
         top100 = (int(rank), dataSongNo, name , artist, likeCnt, albumId)
         top100list.append(top100)
 
-        # 노래 상세 정보 구성
-        songInfoDic = get_songInfo(dataSongNo)
+        songInfoDic = mu.get_songInfo(dataSongNo)
        
         releaseDate = songInfoDic['releaseDate']
         album = songInfoDic['album']
@@ -65,8 +60,7 @@ def get_list (trs) :
         songinfos = (releaseDate , dataSongNo, albumId, album, genre, likeCnt, name, artist)
         songinfolist.append(songinfos)
 
-        # 앨범 상세 정보 구성
-        albumInfoDic =  get_albumInfo(albumId)
+        albumInfoDic =  mu.get_albumInfo(albumId)
 
         albumlike = albumInfoDic['albumlike']
         agency = albumInfoDic['agency']
@@ -76,7 +70,6 @@ def get_list (trs) :
         albuminfos = (releaseDate, agency, albumId, album, rate, albumlike, albumtype, artist)
         albuminfolist.append(albuminfos)
         
-        # 가수, 매핑(가수-노래) 구성
         for singer in artists :
             sid = singer.attrs["href"]
             sid = re.findall("\'(.*)\'", sid)[0]
@@ -86,6 +79,7 @@ def get_list (trs) :
 
             sl = (dataSongNo, name, singer.text, sid)
             sslist.append(sl)
+    
     
 
 get_list(trs1)
@@ -115,7 +109,7 @@ sql_dupl_song = "insert into SongInfo(release_date, song_id, album_id, album_nam
 
 sql_dupl_singer = "insert ignore into Singer(singer_id, singer_name) values(%s, %s)"
 
-sql_dupl_ss = "insert ignore into MappingSongArtist (song_id, title, singer_name, singer_id) values(%s, %s, %s, %s)"
+sql_dupl_ss = "insert ignore into MappingSS (song_id, title, singer_name, singer_id) values(%s, %s, %s, %s)"
 
 conn = get_mysql_conn('hjdb')
 
