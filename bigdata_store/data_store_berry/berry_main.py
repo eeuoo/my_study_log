@@ -72,7 +72,6 @@ get_list(trs2)
 
 albuminfolist = (list(set(albuminfolist)))
 singerList = list(set(singerList))
-sslist = list(set(sslist))
 
 
 # mysql에 데이터 넣기.
