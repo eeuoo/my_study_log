@@ -20,7 +20,7 @@ YARN은 맵리듀스 프레임웍이외에도 다양한 종류의 분산처리�
 
 
 
-### sample data를 이용하여 연간 최고 기온울 구하는 map과 reduce 함수 코딩하기.
+### sample data를 이용하여 연간 최고 기온 구하는 map과 reduce 함수 코딩하기.
 ```python
 
 from pprint import pprint
