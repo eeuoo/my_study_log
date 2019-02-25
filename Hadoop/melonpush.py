@@ -6,7 +6,7 @@ def get_conn(db):
   return pymysql.connect( 
         host = '34.85.124.225',
         user = 'root',
-        password = '11' ,
+        password = '비밀번호' ,
         port = 3306 ,
         db = db ,
         charset = 'utf8' )
