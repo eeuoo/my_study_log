@@ -23,7 +23,7 @@ aggregate(data=mpg, cbind(cty,hwy)~(fl+year), sum)
 ~~~
 
 
-### 3. midwest 데이터를 data.frame으로 불러온 후, 전체인구와 아시아계인구 데이터의 특징을 설명하시오. (state별 비교 설명)
+### 3. midwest 데이터를 data.frame으로 불러온 후, 전체인구와 아시아계인구 데이터의 특징 설명. (state별 비교 설명)
 ~~~R
 midwest = as.data.frame(ggplot2::midwest)
 
@@ -47,18 +47,18 @@ summary(midwest$asian)
 aggregate(data=midwest, cbind(total,asian)~state, sum)
 ~~~
 
-### 4. poptotal 변수(컬럼)를 total로, popasian 변수를 asian으로 변수명을 변경하는 코드를 작성하시오.
+### 4. poptotal 변수(컬럼)를 total로, popasian 변수를 asian으로 변수명 변경.
 ~~~R
 colnames(midwest)[c(5,10)] = c("total","asian")
 ~~~
 
-### 5. 전체 아시아계 인구수와, asian 변수를 이용해 '전체 아시아계 인구 대비 아시아계 인구 백분율' 파생변수(asianpct)를 추가하고, 히스토그램을 그리시오.
+### 5. 전체 아시아계 인구수와, asian 변수를 이용해 '전체 아시아계 인구 대비 아시아계 인구 백분율' 파생변수(asianpct) 추가 후, 히스토그램으로 표현.
 ~~~R
 midwest$asianpct = (midwest$asian/sum(midwest$asian))*100
 hist(midwest$asianpct)
 ~~~
 
-### 6. 도시(state)기준으로 아시아계 인구가 어떻게 분포하는지 설명하시오.
+### 6. 도시(state)기준으로 아시아계 인구 분포 설명.
 ~~~R
 midwest[,c('state','total','asian')]
 total_asian = aggregate(data=midwest, cbind(total,asian)~state, sum)
@@ -83,13 +83,13 @@ a[a$asianpct == max(a$asianpct), ]
 
 
 
-### 7. 아시아계 인구 백분율(asianpct)의 전체 평균을 구하고, 평균을 초과하면 "lg", 그 외는 "sm"을 부여하는 파생변수(asianrate)를 추가하는 코드를 작성하시오.
+### 7. 아시아계 인구 백분율(asianpct)의 전체 평균을 구한 후, 평균을 초과하면 "lg", 그 외는 "sm"을 부여하는 파생변수(asianrate) 추가.
 ~~~R
 mean(midwest$asianpct)
 midwest$asianrate = ifelse(midwest$asianpct > mean(midwest$asianpct), 'lg', 'sm')
 ~~~
 
-### 8. "lg"와 "sm"에 해당하는 지역이 얼마나 되는지 빈도 막대그래프(qplot)을 그려보시오.
+### 8. "lg"와 "sm"에 해당하는 지역이 얼마나 되는지 빈도 막대그래프(qplot)으로 표현.
 ~~~R
 qplot(midwest$asianrate)
 ~~~
