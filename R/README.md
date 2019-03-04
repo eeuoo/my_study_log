@@ -48,7 +48,7 @@ aggregate(data=midwest, cbind(total,asian)~state, sum)
 colnames(midwest)[c(5,10)] = c("total","asian")
 ~~~
 
-### 5. 전체 아시아계 인구수와, asian 변수를 이용해 `전체 아시아계 인구 대비 아시아계 인구 백분율` 파생변수(asianpct)를 추가하고, 히스토그램을 그리시오.
+### 5. 전체 아시아계 인구수와, asian 변수를 이용해 '전체 아시아계 인구 대비 아시아계 인구 백분율' 파생변수(asianpct)를 추가하고, 히스토그램을 그리시오.
 ~~~R
 midwest$asianpct = (midwest$asian/sum(midwest$asian))*100
 hist(midwest$asianpct)
@@ -59,21 +59,25 @@ hist(midwest$asianpct)
 midwest[,c('state','total','asian')]
 total_asian = aggregate(data=midwest, cbind(total,asian)~state, sum)
 total_asian['asianpct'] = (total_asian['asian']/total_asian['total'])*100
+total_asian$perasian = total_asian$asian/sum(total_asian$asian)*100
+total_asian
 hist(total_asian$asianpct)
+# 아시아계 인구는 각 state에 전체 인구 대비 평균 1.24798%로 분포되어 있고, 최소는 IN의 0.6784979%, 최대는 IL의 2.496028%이다.
 
-#아시아계 인구는 평균 1.24798%로 분포되어 있고, 최소는 IN의 0.6784979%, 최대는 IL의 2.496028%이다.
+# midwest 전체 아시아인의 49.820927%는 IL에 있으며, 그 중에서도 IL의 COOK에 32.92717%가 살고 있다.
+a = (aggregate(data=midwest, asianpct~(state+county), max))
+a = a[(a$state == 'IL'),]
+a[a$asianpct == max(a$asianpct), ]
 ~~~
-| state  | total  | asian  | asianpct |
-|:-------|-------:|:------:|:--------:|
-|   IL   |11430602| 285311 |2.4960278 |
-|   IN   |5544159 | 37617  |0.6784979 |
-|   MI   |9295297 | 104983 |1.1294206 |
-|   OH   |10847115|  91179 |0.8405830 |
-|   WI   | 4891769|  53583 | 1.0953706|
+| state  | total  | asian  | asianpct | perasian |
+|:-------|-------:|:------:|:--------:|:--------:|
+|   IL   |11430602| 285311 |2.4960278 |49.820927 |
+|   IN   |5544159 | 37617  |0.6784979 |6.568670  |
+|   MI   |9295297 | 104983 |1.1294206 | 18.332102|
+|   OH   |10847115|  91179 |0.8405830 |15.921652 |
+|   WI   | 4891769|  53583 | 1.0953706| 9.356649 |
 
 
-
-  
 
 ### 7. 아시아계 인구 백분율(asianpct)의 전체 평균을 구하고, 평균을 초과하면 "lg", 그 외는 "sm"을 부여하는 파생변수(asianrate)를 추가하는 코드를 작성하시오.
 ~~~R
