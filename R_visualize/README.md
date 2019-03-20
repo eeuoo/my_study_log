@@ -1,6 +1,4 @@
-### 1. R의 시각화 Package 중 대표적인 그래프 함수(5개이상)에 대한 용도와 작도법.
-
-<br>
+### 1. R의 시각화 Package 중 대표적인 그래프 함수(5개 이상)에 대한 용도와 작도법.
 
 1) 산점도 (scatter)   
 2개의 변수 간 관계를 알아보기 위해 두 변수의 값을 점으로 표현한 그래프이다.    
@@ -95,20 +93,35 @@ ggplot(mpg, aes(cty)) +
        fill = "실린더수")
 ~~~
 
+<br>
+<br>
+
 ### 2. data(성적.csv) 데이터에서 수학 성적이 90점 이상인 학생들에 대한 그래프 작도.
 1) 성비가 표현된 학급별 학생수 막대그래프.
 ~~~r
+ggplot(data %>% filter(math >= 90), aes(cls)) +
+  geom_bar(aes(fill=gen), width = 0.5) +
+  scale_fill_discrete(name = "성별") +      
+  labs(x = '학급', y = '학생수', title = '학급별 학생수', subtitle = '(수학 성적 90점 이상)')
 ~~~
 
 2) 학급별 밀도그래프.
 ~~~r
+ggplot(data %>% filter( math >= 90), aes(math)) +
+  geom_density(aes(fill=factor(cls)),size = 0.2, alpha = 0.5) +
+  labs(x = '성적', y = '밀도', title = '반별 수학 우수 학생', subtitle = '(수학 점수 90 이상)', fill = '학급')
 ~~~
+
+
+<br>
+<br>
 
 ### 3. 시각화 포트폴리오 1
-~~~r
-~~~
+
+
+<br>
+<br>
 
 ### 4. 시각화 포트폴리오 2
-~~~r
-~~~
+
 
