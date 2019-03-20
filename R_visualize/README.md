@@ -111,17 +111,21 @@ ggplot(data %>% filter( math >= 90), aes(math)) +
   geom_density(aes(fill=factor(cls)),size = 0.2, alpha = 0.5) +
   labs(x = '성적', y = '밀도', title = '반별 수학 우수 학생', subtitle = '(수학 점수 90 이상)', fill = '학급')
 ~~~
+<br>
 
+R markdown 주소 : https://eeuoo.github.io/R/r_visual_test_2.html
 
 <br>
 <br>
 
 ### 3. 시각화 포트폴리오 1
 
+R markdown 주소 : https://eeuoo.github.io/R/visualize.html
 
 <br>
 <br>
 
 ### 4. 시각화 포트폴리오 2
 
+R markdown 주소 : https://eeuoo.github.io/R/choropleth_visualize.html
 
